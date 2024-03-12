@@ -1,5 +1,7 @@
 # Comunicação entre processos Linux
 
+Roteiro de estudo produzido pelo Claude.ai.
+
 1. **Introdução**
    - Conceitos básicos de processos e threads
    - Motivos para a comunicação entre processos
