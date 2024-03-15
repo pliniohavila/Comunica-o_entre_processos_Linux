@@ -3,14 +3,14 @@
 
 ## 1.1 Conceitos básicos de processos e threads
 
-O que é um processo? 
-Um processo é uma abstração de um software em execução.
-Segundo Tanenbaum (2016, p. 60), "Um processo é apenas uma instância de um programa em execução,
-incluindo os valores atuais do contador do programa, registradores e variáveis". 
+O que é um processo? Respondendo diretamente: um processo é uma abstração de um software em execução.
+Segundo Tanenbaum (2016, p. 60), "*Um processo é apenas uma instância de um programa em execução,
+incluindo os valores atuais do contador do programa, registradores e variáveis*". 
 De forma simples, um processo é um programa em execução. Em outras palavras, é um programa ativo, realizando suas atividades pelo qual foi desenvolvido, é um software em execução, em atividade.
 
 Cada processo tem um ID, que é atribuido pelo sistema operacional, cujo valor máximo em sistemas Linux é 32768. 
-Para vermos o ID dos processos em execução, podemos utilizar a ferramente `ps`. 
+Para vermos o ID dos processos em execução, podemos utilizar a ferramenta `ps`. 
+
 Exemplo:
 
 ```shell
@@ -36,18 +36,12 @@ Tanenbaum (2016, p. 61), aponta quatro eventos principais em que os processos s�
 
 Em termos de código, para se criar um processo em ambiente Linux, fazemos uma chamada ao kernel, por meio da _syscall_ `fork()` que criará um clone do processo que a chamou. Em seguida, é chamada uma das funções da família `exec()` que substitui a imagem do processo atual pela imagem do novo processo.  
 
-Também, podemos utilizar a função `system()`. Essa forma é mais direta e simples, porém não muito eficiente, pois faz uma chamada para o shell `sh -c` antes de iniciar um processo com o programada desejado. 
+Também, podemos utilizar a função `system()`. Essa forma é mais direta e simples, porém não muito eficiente, pois faz uma chamada para o shell `sh -c` antes de iniciar o novo processo com o programada desejado. 
 
 O processo que deu origem ao novo processo é chamado de **processo pai** e o novo processo é chamado de **processo filho**. 
 
-**Exemplo: **
-Um exemplo ximples da criação de um novo processo.
-
-
-http://www.inf.ufes.br/~rgomes/so_fichiers/roteiro1.pdf
-
-http://www.inf.ufes.br/~rgomes/so_fichiers/roteiro2.pdf
-
+**Exemplo:**
+Um exemplo simples da criação de um novo processo.
 
 ### Término de processos 
 
@@ -75,6 +69,19 @@ Penso em deixar este tópico para exemplos de código
 
 ## Process API 
 
+FORK 
+
+
+
+FORK EXEC 
+
+
+
+
+FORK EXEC WAIT
+https://www.educative.io/answers/wait-vs-waitpid-in-c
+
+
 Referências:
 https://pages.cs.wisc.edu/~remzi/OSTEP/cpu-api.pdf 
 
@@ -82,29 +89,6 @@ http://www.inf.ufes.br/~rgomes/so_fichiers/roteiro1.pdf
 
 http://www.inf.ufes.br/~rgomes/so_fichiers/roteiro2.pdf
 
-Texto gerado pelo claud.ia
-
-Agora vamos conhecer a API  de processos em sistemas Linux. 
-
-A process API (Application Programming Interface) em sistemas Linux é um conjunto de chamadas de sistema e recursos fornecidos pelo kernel do Linux que permitem que programas interajam com processos em execução no sistema operacional. Ela oferece uma interface para criar, monitorar, controlar e terminar processos.
-
-Algumas das principais funcionalidades fornecidas pela process API do Linux incluem:
-
-1. **Criação de Processos**: A API permite criar novos processos através de chamadas de sistema como `fork()`, `vfork()`, `clone()` e `execve()`. Essas chamadas permitem que um processo crie uma cópia de si mesmo ou execute um novo programa.
-
-2. **Gerenciamento de Processos**: A API fornece chamadas de sistema para obter informações sobre processos em execução, como `getpid()` (obter o ID do processo atual), `getppid()` (obter o ID do processo pai) e `waitpid()` (aguardar a finalização de um processo filho).
-
-3. **Controle de Processos**: Chamadas de sistema como `kill()` permitem enviar sinais para processos, o que pode ser usado para interromper, pausar ou retomar a execução de um processo.
-
-4. **Agendamento de Processos**: O kernel Linux utiliza algoritmos de agendamento para determinar qual processo deve ser executado em um determinado momento. A API fornece chamadas de sistema como `sched_setscheduler()` e `sched_getparam()` para ajustar as prioridades e políticas de agendamento de processos.
-
-5. **Gerenciamento de Recursos**: A API inclui chamadas de sistema para limitar e controlar os recursos consumidos por um processo, como memória (`brk()`, `mmap()`), arquivos abertos (`open()`, `close()`) e permissões (`setuid()`, `setgid()`).
-
-6. **Sincronização de Processos**: A API fornece mecanismos de sincronização, como semáforos (`sem_init()`, `sem_wait()`), mutexes (`pthread_mutex_init()`, `pthread_mutex_lock()`) e variáveis de condição (`pthread_cond_init()`, `pthread_cond_wait()`), que permitem a coordenação de processos e threads concorrentes.
-
-7. **Comunicação entre Processos**: A API fornece mecanismos para a comunicação entre processos, como pipes (`pipe()`), filas de mensagens (`msgget()`, `msgsnd()`, `msgrcv()`), memória compartilhada (`shmget()`, `shmat()`) e sockets (`socket()`, `bind()`, `connect()`).
-
-A process API do Linux é amplamente utilizada por programadores de aplicações, bibliotecas de sistema e ferramentas de desenvolvimento para criar, gerenciar e interagir com processos em ambientes Linux. Ela é fundamental para a construção de aplicações robustas e eficientes que aproveitam os recursos do sistema operacional.
 
 
 

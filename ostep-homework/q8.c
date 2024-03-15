@@ -31,22 +31,24 @@ int     main(void)
         close(fd[1]);
         exit(EXIT_SUCCESS);
     }
-    else 
+    cpid2 = fork();
+    if (cpid2 == -1 ) 
     {
-        cpid2 = fork();
-        if (cpid2 == -1 ) 
-        {
-            perror("fork");
-            exit(EXIT_FAILURE);
-        }
-        if (cpid2 == 0)
-        {
-            close(fd[1]);
-            while (read(fd[0], &buf, 1) > 0)
-                write(STDOUT_FILENO, &buf, 1);
-            close(fd[0]);
-            exit(EXIT_SUCCESS);
-        }
+        perror("fork");
+        exit(EXIT_FAILURE);
     }
+    if (cpid2 == 0)
+    {
+        close(fd[1]);
+        while (read(fd[0], &buf, 1) > 0)
+            write(STDOUT_FILENO, &buf, 1);
+        close(fd[0]);
+        exit(EXIT_SUCCESS);
+    }
+    close(fd[1]);
+    close(fd[0]);
+
+    waitpid(cpid1, NULL, 0);
+    waitpid(cpid2, NULL, 0);
     exit(EXIT_SUCCESS);
 }
