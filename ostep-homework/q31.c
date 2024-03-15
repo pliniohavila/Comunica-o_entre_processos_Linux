@@ -10,15 +10,23 @@
 
 void    handler(int signal)
 {
-    // if (signal == SIGCHLD)
-    printf("Goodbye!\n");
+    if (signal == SIGCHLD)
+        printf("Goodbye!\n");
+    exit(0);
 }
 
 int     main(void) 
 {
-    pid_t   cpid;
+    pid_t       cpid;
+    struct      sigaction sa;
 
-    // signal(SIGCHLD, handler);
+    sa.sa_handler = handler;
+    sigemptyset(&sa.sa_mask);
+    sa.sa_flags = 0;
+    if (sigaction(SIGCHLD, &sa, NULL) == -1) {
+        perror("Error setting up signal handler");
+        exit(1);
+    }
     if ((cpid = fork()) == -1) 
     {
         perror("Fork error\n");
@@ -27,11 +35,16 @@ int     main(void)
     if (cpid == 0) 
     {
         printf("Hello!\n");
+        exit(0);
     }
     else 
     {
-        if (signal(SIGCHLD, handler) == SIGCHLD)
-            printf("Goodbye!\n");
+        while(1)
+        {
+            int sig = pause();
+            if (sig == SIGCHLD)
+                break;
+        }
     }
     return (0);
 }
