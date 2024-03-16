@@ -31,11 +31,5 @@ int     main(void)
         dprintf(fd, "Parent writed!\n");
         close(fd);
     }
-    // if (dprintf(fd, "Olá, mundo!\n") == -1) 
-    // {
-    //     perror("Erro ao escrever no arquivo");
-    //     close(fd);
-    //     return 1;
-    // }
     return (0);
 }

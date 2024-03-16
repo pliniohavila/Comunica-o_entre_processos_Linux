@@ -12,7 +12,6 @@ int     main(void)
     x = 100;
     printf("Initial x value: %d\n", x);
     cpid = fork();
-    // assert(cpid);
     if (cpid == 0)
     {
         x = 50;
@@ -23,6 +22,5 @@ int     main(void)
         x = 500;
         printf("Parent x value: %d\n", x);
     }
-    printf("Final x value: %d\n", x);
     return (0);
 }
