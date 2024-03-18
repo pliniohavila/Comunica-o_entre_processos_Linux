@@ -1,7 +1,7 @@
 
 # 1- Introdução
 
-## 1.1 Conceitos básicos de processos
+## 1.1 Conceitos básicos de processos Linux
 
 O que é um processo? Respondendo diretamente: um processo é um binário em execução. O qual pode ser dito, em outras palavras, é uma abstração de um software em execução. Segundo Tanenbaum (2016, p. 60), "*Um processo é apenas uma instância de um programa em execução,
 incluindo os valores atuais do contador do programa, registradores e variáveis*". 
@@ -178,18 +178,14 @@ Como o envio do sinal é assíncrono, temos situação que devemos suspender a e
 
 Nesse cenário, que entra em cena as funções `wait()` e `waitpid()`.
 
-Sendo direto o MAN relata que as funções esperam por uma mudança de *status* no processo.
-
-Coleciono os dizeres do Prof. Eduardo Zambon
+Sendo direto o MAN relata que as funções esperam por uma mudança de *status* no processo. Um explicação que gostei é do Prof. Eduardo Zambon: 
 "*A chamada wait() é usada para esperar por mudanças de estado nos filhos do processo chamador (pai) e obter informações sobre aqueles filhos cujos estados tenham sido alterados (ex: morte de um filho). Quando o pai executa o wait(), se o filho já teve o seu estado alterado (ex: já morreu) no momento da chamada, ela retorna imediatamente; caso contrário, o processo chamador é bloqueado até que ocorra uma mudança de estado do filho ou então um “signal handler” interrompa a chamada (isso será explicado mais adiante)*"
+
+Essas funções retornam o PID do processo encerrado ou `-1` no caso de erro. 
 
 fonte: http://www.inf.ufes.br/~rgomes/so_fichiers/roteiro2.pdf
 
-
-
-
-
-Exemplo com `wait()`
+Vejamos um exemplo de uso da função `wait()`. 
 
 ```c
 #include <stdio.h>
@@ -202,6 +198,7 @@ int     main(void)
 {
     pid_t   cpid1;
     pid_t   cpid2;
+    int     status;
 
     cpid1 = fork();
     if (cpid1 == -1 ) 
@@ -220,15 +217,60 @@ int     main(void)
         printf("Processo filho dois\n");
         exit(EXIT_SUCCESS);
     }
-    wait(NULL);
+    wait(&status);
     printf("Processo pai\n");
     exit(EXIT_SUCCESS);
 }
 ```
+Observa que passamos o endereço de uma variável na chamada da função `wait()`. Por meio dela, o processo pai receberá informações informações a respeito do processo filho. No qual se dá por meio de *flags* binárias, o qual são lidas através de macros específicos. 
 
-Exemplo com `waitpid()` 
+Mais um vez, coleciono as anotações do Prof. Eduardo Zambon: 
 
-trocarmos parte final do código acima, pelo seguinte 
+O POSIX expecifica seis macros, projetadas para operarem em pares:
+- WIFEXITED(status): permite determinar se o processo filho terminou normalmente. Se WIFEXITED avalia um valor não zero, o filho terminou normalmente. Neste caso, WEXITSTATUS avalia os 8-bits de menor ordem retornados pelo filho através de _exit(), exit() ou return de main.
+- WEXITSTATUS(status): retorna o código de saída do processo filho.
+- WIFSIGNALED(status): permite determinar se o processo filho terminou devido a um
+sinal.
+- WTERMSIG(status): permite obter o número do sinal que provocou a finalização do
+processo filho.
+- WIFSTOPPED(status): permite determinar se o processo filho que provocou o retorno se encontra congelado/suspenso (stopped).
+- WSTOPSIG(status): permite obter o número do sinal que provocou o congelamento do processo filho. 
+
+Vejamos um exemplo com uso de verificação do retorno da chamada da função `wait()` e do valor do *status*:
+
+```c 
+#include <stdio.h>
+#include <stdlib.h>
+#include <unistd.h>
+#include <sys/types.h>
+#include <sys/wait.h>
+
+int     main(void) 
+{
+    pid_t   cpid1;
+    pid_t   r_wait;
+    int     status;
+
+    cpid1 = fork();
+    if (cpid1 == -1 ) 
+        exit(EXIT_FAILURE);
+
+    if (cpid1 == 0)
+    {
+        printf("Processo filho - PID: %d\n", getpid());
+        exit(EXIT_SUCCESS);
+    }
+    r_wait = wait(&status);
+    printf("Valor de retorno da chamada wait: %d\n", r_wait);
+    if (WIFEXITED(status)) 
+        printf("Processo filho um retornou o código: %d.\n", WEXITSTATUS (status));
+    exit(EXIT_SUCCESS);
+}
+```
+
+Outra funação, é a `waitpid()`, o qual diferentemente da sua irmão, ela permite que definimos o PID de um processo específico que estamos aguardando o seu encerramento. 
+
+Exemplo com `waitpid()`, no qual trocarmos parte final do código acima, pelo seguinte: 
 
 ```c
   waitpid(cpid1, NULL, 0);
@@ -238,30 +280,28 @@ trocarmos parte final do código acima, pelo seguinte
   exit(EXIT_SUCCESS);
 ```
 
-Diferenças entre `wait()` e `waitpid`
+**Diferenças entre `wait()` e `waitpid`** 
 
+As funções `wait()` e `waitpid` se diferenciam nos seguintes; 
 
-FORK EXEC 
+A função `wait()` bloqueia o processo até que qualquer dos filhos termine. 
 
+A função `waitpid()`, aguarda um processo filho específico tenha o seu *status* alterado. Por padrão, ela agurada o término do processo indicado, porém, o seu comportamento pode ser alterado por meio das opções do terceiro argumento. 
 
-
-
-
-
-https://www.educative.io/answers/wait-vs-waitpid-in-c
-
-
-Referências:
-https://pages.cs.wisc.edu/~remzi/OSTEP/cpu-api.pdf 
-http://www.inf.ufes.br/~rgomes/so_fichiers/roteiro1.pdf
-http://www.inf.ufes.br/~rgomes/so_fichiers/roteiro2.pdf
+São as opções disponíveis. 
+- WNOHANG: retorna imediatamente, em vez de bloquear, se não houver nenhum processo filho que tenha terminado ou parado. Isso permite verificar o status dos processos filhos sem ficar bloqueado.  
+- WUNTRACED: Essa opção faz com que a função waitpid() também retorne informações sobre processos filhos que foram parados (stopped), além dos processos filhos que terminaram. Por padrão, a função só retorna informações sobre processos filhos que terminaram.
+- WCONTINUED: retorna informações sobre processos filhos que foram retomados (resumed) após terem sido parados. Isso é útil quando se deseja monitorar o ciclo de vida completo dos processos filhos, incluindo pausas e retomadas.
 
 
 
-## 1.1.2 Motivos para a comunicação entre processos
+## Referências:
+- STEVENS, W. Richard; RAGO, Stephen A. Advanced programming in the UNIX environment. Addison-Wesley, 2013.
+- Tanenbaum, Andrew S. Sistemas operacionais modernos / Andrew S. Tanenbaum, Herbert Bos; tradução Jorge Ritter; revisão técnica Raphael Y. de Camargo. – 4. ed. – São Paulo: Pearson Education do Brasil, 2016.
+- MATTHEW, Neil; STONES, Richard. Beginning linux programming. John Wiley & Sons, 2008.
+- https://pages.cs.wisc.edu/~remzi/OSTEP/
+- https://pages.cs.wisc.edu/~remzi/OSTEP/cpu-api.pdf 
+- http://www.inf.ufes.br/~rgomes/so_fichiers/roteiro1.pdf
+- http://www.inf.ufes.br/~rgomes/so_fichiers/roteiro2.pdf
+- https://www.educative.io/answers/wait-vs-waitpid-in-c
 
-
-
-##  1.3 Benefícios e desafios da comunicação entre processos
-
-## 1.2 Conceitos básicos de threads
