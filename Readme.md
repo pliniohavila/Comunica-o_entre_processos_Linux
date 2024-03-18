@@ -12,17 +12,41 @@ Roteiro de estudo produzido pelo Claude.ai.
    - Operações com file descriptors (abrir, ler, escrever, fechar)
    - Duplicação de file descriptors
    - Redirecionamento de entrada/saída padrão
+
 3. **Pipes**
    - Pipes anônimos
    - Pipes nomeados (FIFOs)
    - Criação, leitura e escrita em pipes
    - Limitações dos pipes
 
-4. **Sinais**
+------
+
+4. **Sockets Unix**
+   - Visão geral de sockets Unix
+   - Criação de sockets Unix
+   - Ligação de sockets Unix a endereços
+   - Estabelecimento de conexões
+   - Comunicação através de sockets Unix
+
+5. **Integração de file descriptors e sockets Unix**
+   - Uso de file descriptors para representar sockets Unix
+   - Operações de leitura e escrita em sockets Unix usando file descriptors
+   - Controle de acesso e permissões em sockets Unix
+   - Fechamento de sockets Unix
+
+5. **Sinais**
    - Visão geral dos sinais no Unix
    - Envio e captura de sinais
    - Manipuladores de sinais
    - Sinais e comunicação entre processos
+
+
+Os demais serão estudados em tópico próprio de concorrência e paralelismo
+
+https://fidelissauro.dev/concorrencia-paralelismo/
+
+Processos, Threads, Mutex e Semáfaros  
+
 
 5. **Memória Compartilhada**
    - Criação de segmentos de memória compartilhada
@@ -37,37 +61,15 @@ Roteiro de estudo produzido pelo Claude.ai.
    - Operações com semáforos (inicialização, bloqueio, desbloqueio)
    - Uso de semáforos para sincronização
 
-7. **Filas de Mensagens**
-   - Criação e acesso a filas de mensagens
-   - Envio e recebimento de mensagens
-   - Controle de acesso e permissões em filas de mensagens
-   - Remoção de filas de mensagens
-
-8. **Sockets Unix**
-   - Visão geral de sockets Unix
-   - Criação de sockets Unix
-   - Ligação de sockets Unix a endereços
-   - Estabelecimento de conexões
-   - Comunicação através de sockets Unix
 
 
-9. **Integração de file descriptors e sockets Unix**
-   - Uso de file descriptors para representar sockets Unix
-   - Operações de leitura e escrita em sockets Unix usando file descriptors
-   - Controle de acesso e permissões em sockets Unix
-   - Fechamento de sockets Unix
 
 10. **Sincronização e Concorrência**
    - Condições de corrida
    - Deadlocks
    - Estratégias de sincronização
 
-13. **Desempenho e Escalabilidade**
-	 - Comparação de mecanismos de IPC
-    - Otimização de comunicação entre processos
-    - Limitações e trade-offs
-
-14. **Exemplos e Exercícios Práticos**
+13. 14. **Exemplos e Exercícios Práticos**
    - Implementar programas que criam e utilizam sockets Unix
    - Usar sockets Unix para comunicação entre processos
    - Explorar casos de uso, como comunicação entre servidores e clientes
