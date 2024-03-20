@@ -8,6 +8,8 @@ Bos; tradução Jorge Ritter; revisão técnica Raphael Y. de Camargo. – 4. ed
 MATTHEW, Neil; STONES, Richard. Beginning linux programming. John Wiley & Sons, 2008.
 
 
+Kerrisk, Michael, 1961 - The Linux programming interface: a Linux and UNIX system programming handbook / by Michael Kerrisk.
+
 https://pages.cs.wisc.edu/~remzi/OSTEP/
 
 https://web101.leandronsp.com

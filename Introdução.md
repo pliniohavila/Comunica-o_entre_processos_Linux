@@ -3,8 +3,7 @@
 
 ## 1.1 Conceitos básicos de processos Linux
 
-O que é um processo? Respondendo diretamente: um processo é um binário em execução. O qual pode ser dito, em outras palavras, é uma abstração de um software em execução. Segundo Tanenbaum (2016, p. 60), "*Um processo é apenas uma instância de um programa em execução,
-incluindo os valores atuais do contador do programa, registradores e variáveis*". 
+O que é um processo? Respondendo diretamente: um processo é um binário em execução. O qual pode ser dito, em outras palavras, é uma abstração de um software em execução. Segundo Tanenbaum (2016, p. 60), "*Um processo é apenas uma instância de um programa em execução, incluindo os valores atuais do contador do programa, registradores e variáveis*". 
 
 De forma simples, um processo é um programa em execução. Em outras palavras, é um programa ativo, realizando suas atividades pelo qual foi desenvolvido, é um software em execução, em atividade.
 
@@ -32,25 +31,22 @@ Tanenbaum (2016, p. 61), aponta quatro eventos principais em que os processos s�
 1. Inicialização do sistema.
 2. Execução de uma chamada de sistema de criação de processo por um processo em execução.
 3. Solicitação de um usuário para criar um novo processo.
-4. Início de uma tarefa em lote
+4. Início de uma tarefa em lote.
 
 Em termos de código, para se criar um processo em ambiente Linux, fazemos uma chamada ao kernel, por meio da _syscall_ `fork()` que criará um clone do processo que a chamou. Em seguida, é chamada uma das funções da família `exec()` que substitui a imagem do processo atual pela imagem do novo processo.  
 
-Também, podemos utilizar a função `system()`. Essa forma é mais direta e simples, porém não muito eficiente, pois faz uma chamada para o shell `sh -c` antes de iniciar o novo processo com o programada desejado. 
+Também, podemos utilizar a função `system()`. Essa forma é mais direta e simples, porém não muito eficiente, pois faz uma chamada para o shell `sh -c` antes de iniciar o novo processo com o programa desejado. 
 
 O processo que deu origem ao novo processo é chamado de **processo pai** e o novo processo é chamado de **processo filho**. 
 
-**Exemplo:**
-Um exemplo simples da criação de um novo processo.
-
 ### 1.1.2 Término de processos 
 
-Um processo poderá terminar de forma voluntária ou involuntária. Ensina Tanenbaum (2016, p. 63) as quatros formas que um processo poderá terminar:
+Um processo poderá terminar de forma voluntária ou involuntária. Ensina Tanenbaum (2016, p. 63) as quatras formas que um processo poderá terminar:
 
 1. Saída normal (voluntária): encerra a execução após realizar o seu trabalho;
-2. Erro fatal (involuntário): ocorre quando processo tenta acessar um recurso não disponível;
+2. Erro fatal (involuntário): ocorre quando o processo tenta acessar um recurso não disponível;
 3. Saída por erro (voluntária): ocorre um erro na execução do programa, a exemplo, dividir por zero;
-4. Morto por outro processo (involuntário): um outro processo pede ao sistema operacional interromper a execução de outro processo. 
+4. Morto por outro processo (involuntário): outro processo pede ao sistema operacional interromper a execução de outro processo. 
 
 ### 1.1.3 Estados do processo
 
@@ -58,17 +54,17 @@ Um processo em execução pode se encontrar em um dos três estados: em execuç�
 
 1. Em execução: o processo está executando suas instruções; 
 2. Pronto: o processo está pronto para ser executado, aguardando a decisão do sistema operacional de o colocar em execução;
-3. Bloquado: está a espera de um evento para seja possível continuar a sua execução. 
+3. Bloqueado: está à espera de um evento para que seja possível continuar a sua execução. 
 
-Anota-se que todos os estados de um processo é determinado pelo sistama operacional, por meio do escalonador de processos. 
+Anota-se que todos os estados de um processo são determinados pelo sistema operacional, por meio do escalonador de processos. 
 
 ### 1.1.4 Exemplos de código 
 
-Neste tópico será destinado para exemplos de códigos utilizando a API do Linux para manusear processos. 
+Neste tópico, será destinado para exemplos de códigos utilizando a API do Linux para manusear processos. 
 
 #### Função fork()
 
-No primeiro exemplo vamos criar um processo com a utilização da função `fork()` para criar um processo filho.
+No primeiro exemplo, vamos criar um processo com a utilização da função `fork()` para criar um processo filho.
 
 A função `fork()` cria um clone do processo pai, compartilhando mesmo trecho de código e recursos do processo criador. 
 
@@ -81,11 +77,11 @@ pid_t fork(void);
 ```
 
 Esta função retorna o seguinte: 
-Em caso  de sucesso, retornar o PID do processo filho para o pai, e `0` para o processo criado. Em caso de falha, `-1` é retornado. 
+Em caso de sucesso, retornar o PID do processo filho para o pai, e `0` para o processo criado. Em caso de falha, `-1` é retornado. 
 
 Outro detalhe, o processo filho inicia a sua execução a partir do `fork()`. O processo filho não inicia a sua execução a partir da função `main`.  
 
-No exemplo seguinte, o processo pai declara a variável `x`, a assinala um valor para ela. Posteriormente faz uma chamada para a criação de novo processo, e, respectivamente, cada um alterar o valor da variável e o imprimi na tela. 
+No exemplo seguinte, o processo pai declara a variável `x`, a assinala um valor para ela. Posteriormente, faz uma chamada para a criação de novo processo, e, respectivamente, cada um alterar o valor da variável e o imprimi na tela. 
 
 ```c
 #include <stdio.h>
@@ -115,7 +111,7 @@ int     main(void)
     return (0);
 }
 ```
-No exemplo seguinte, temos um caso onde processos pai e filho compartilham o mesmo *file descritor*, escrevendo no mesmo arquivo, o qual foi aberto pelo pai. 
+No exemplo seguinte, temos um caso onde os processos pai e filho compartilham o mesmo *file descritor*, escrevendo no mesmo arquivo, o qual foi aberto pelo pai. 
 
 ```c
 #include <stdio.h>
@@ -156,7 +152,7 @@ int     main(void)
 
 #### Funções wait() e waitpid()
 
-Vemos no primeiro exemplo acima, que o processo pai imprimi o valor de `x` antes do filho. E caso for necessário que o processo criador aguardasse e execução de um ou mais processos filhos. 
+Vemos no primeiro exemplo acima, que o processo pai imprimi o valor de `x` antes do filho. E caso for necessário, que o processo criador aguardasse a execução de um ou mais processos filhos. 
 
 Para esses casos, temos as funções `wait()` e `waitpid()`. 
 
@@ -173,12 +169,12 @@ pid_t waitpid(pid_t pid, int *wstatus, int options);
 
 Segundo ensinam STEVENS, W. Richard e RAGO, Stephen (2013), quando um processo termina, seja normalmente e não, o kernel informa o processo pai enviando o sinal (SIGCHLD). O envio desse sinal é assíncrono, o que pode ocorrer com o processo pai em execução ou não. O processo criador pode escolher entre ignorar o sinal, via de regra, ou executar alguma outra ação. 
 
-Há outros sinais que podem serem enviados, mas, por ora, se atermos ao SIGCHLD. 
-Como o envio do sinal é assíncrono, temos situação que devemos suspender a execução do processo pai, enquanto aguarda o término de um ou mais processos filhos. 
+Há outros sinais que podem ser enviados, mas, por ora, se atermos ao SIGCHLD. 
+Como o envio do sinal é assíncrono, temos situação em que devemos suspender a execução do processo pai, enquanto aguardamos o término de um ou mais processos filhos. 
 
-Nesse cenário, que entra em cena as funções `wait()` e `waitpid()`.
+Nesse cenário, que entram em cena as funções `wait()` e `waitpid()`.
 
-Sendo direto o MAN relata que as funções esperam por uma mudança de *status* no processo. Um explicação que gostei é do Prof. Eduardo Zambon: 
+Sendo direto, o MAN relata que as funções esperam por uma mudança de *status* no processo. Uma explicação que gostei é do Prof. Eduardo Zambon: 
 "*A chamada wait() é usada para esperar por mudanças de estado nos filhos do processo chamador (pai) e obter informações sobre aqueles filhos cujos estados tenham sido alterados (ex: morte de um filho). Quando o pai executa o wait(), se o filho já teve o seu estado alterado (ex: já morreu) no momento da chamada, ela retorna imediatamente; caso contrário, o processo chamador é bloqueado até que ocorra uma mudança de estado do filho ou então um “signal handler” interrompa a chamada (isso será explicado mais adiante)*"
 
 Essas funções retornam o PID do processo encerrado ou `-1` no caso de erro. 
@@ -222,7 +218,7 @@ int     main(void)
     exit(EXIT_SUCCESS);
 }
 ```
-Observa que passamos o endereço de uma variável na chamada da função `wait()`. Por meio dela, o processo pai receberá informações informações a respeito do processo filho. No qual se dá por meio de *flags* binárias, o qual são lidas através de macros específicos. 
+Observa-se que passamos o endereço de uma variável na chamada da função `wait()`. Por meio dela, o processo pai receberá informações a respeito do processo filho. No qual se dá por meio de *flags* binárias, as quais são lidas por meio de macros específicos. 
 
 Mais um vez, coleciono as anotações do Prof. Eduardo Zambon: 
 
@@ -268,9 +264,9 @@ int     main(void)
 }
 ```
 
-Outra funação, é a `waitpid()`, o qual diferentemente da sua irmão, ela permite que definimos o PID de um processo específico que estamos aguardando o seu encerramento. 
+Outra função é a `waitpid()`, a qual, diferente da sua irmã, ela permite que definamos o PID de um processo específico que estamos aguardando o seu encerramento. 
 
-Exemplo com `waitpid()`, no qual trocarmos parte final do código acima, pelo seguinte: 
+Exemplo com `waitpid()`, no qual trocamos a parte final do código acima pelo seguinte: 
 
 ```c
   waitpid(cpid1, NULL, 0);
@@ -282,16 +278,16 @@ Exemplo com `waitpid()`, no qual trocarmos parte final do código acima, pelo se
 
 **Diferenças entre `wait()` e `waitpid`** 
 
-As funções `wait()` e `waitpid` se diferenciam nos seguintes; 
+As funções `wait()` e `waitpid` se diferenciam nos seguintes. 
 
 A função `wait()` bloqueia o processo até que qualquer dos filhos termine. 
 
-A função `waitpid()`, aguarda um processo filho específico tenha o seu *status* alterado. Por padrão, ela agurada o término do processo indicado, porém, o seu comportamento pode ser alterado por meio das opções do terceiro argumento. 
+A função `waitpid()`, aguarda um processo filho específico tenha o seu *status* alterado. Por padrão, ela aguarda o término do processo indicado, porém, o seu comportamento pode ser alterado por meio das opções do terceiro argumento. 
 
 São as opções disponíveis. 
 - WNOHANG: retorna imediatamente, em vez de bloquear, se não houver nenhum processo filho que tenha terminado ou parado. Isso permite verificar o status dos processos filhos sem ficar bloqueado.  
-- WUNTRACED: Essa opção faz com que a função waitpid() também retorne informações sobre processos filhos que foram parados (stopped), além dos processos filhos que terminaram. Por padrão, a função só retorna informações sobre processos filhos que terminaram.
-- WCONTINUED: retorna informações sobre processos filhos que foram retomados (resumed) após terem sido parados. Isso é útil quando se deseja monitorar o ciclo de vida completo dos processos filhos, incluindo pausas e retomadas.
+- WUNTRACED: Essa opção faz com que a função waitpid() também retorne informações sobre processos filhos parados (stopped), além dos processos filhos que terminaram. Por padrão, a função só retorna informações sobre processos filhos que terminaram.
+- WCONTINUED: retorna informações sobre processos filhos retomados (resumed) após terem sido parados. Isso é útil quando se deseja monitorar o ciclo de vida completo dos processos filhos, incluindo pausas e retomadas.
 
 
 
@@ -304,4 +300,3 @@ São as opções disponíveis.
 - http://www.inf.ufes.br/~rgomes/so_fichiers/roteiro1.pdf
 - http://www.inf.ufes.br/~rgomes/so_fichiers/roteiro2.pdf
 - https://www.educative.io/answers/wait-vs-waitpid-in-c
-
