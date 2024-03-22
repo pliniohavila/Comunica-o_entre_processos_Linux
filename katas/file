@@ -1,0 +1,16 @@
+  PID TTY          TIME CMD
+   11 pts/0    00:00:02 zsh
+   14 pts/0    00:00:00 zsh
+   22 pts/0    00:00:00 zsh
+   23 pts/0    00:00:00 zsh
+   25 pts/0    00:00:00 gitstatusd-linu
+ 5413 pts/0    00:00:00 ps
+a.out
+cat
+cat.c
+create_file.c
+ls.txt
+ps.txt
+read_file
+read_file.c
+remove_file.c
