@@ -3,9 +3,10 @@
 #include <stdlib.h>
 #include <assert.h>
 
-static int         get_qtd_tokens(char *input);
+#include "parser.h"
 
-char    **parser(char *str) {
+char    **parser(char *str) 
+{
     char    *str_cp;
     char    delim[] = "<>|";
     char    *token;
@@ -19,7 +20,7 @@ char    **parser(char *str) {
     assert(str_cp != NULL);
     strcpy(str_cp, str); 
     
-    qtd_tokens = get_qtd_tokens(str);
+    qtd_tokens = get_qtd_primitive_tokens(str);
     tokens = malloc(sizeof(char*) * (qtd_tokens * 2));
     assert(tokens != NULL);
     i = 0;
@@ -56,23 +57,47 @@ char    **parser(char *str) {
     return tokens;
 }
 
-int main(void) {
-    char    str[] = "cat -a -b -c < ls.log | sort -b -d | wc -v";
-    char    **tokens;
-    int     i;
+char        **get_tokens(char *input)
+{
+    char        **tokens;
+    char        *token;
+    int         qtd_tokens;
+    int         i;
+   
 
-    tokens = parser(str);
+    while ((*input == ' ') || (*input == '\t'))
+        input++;
+    qtd_tokens = get_qtd_tokens(input);
+    tokens = malloc(sizeof(char*) * qtd_tokens);
+    assert(tokens != NULL);
+    token = strtok(input, " ");
     i = 0;
-    while (tokens[i] != NULL)
+    while (token != NULL)
     {
-        printf("%s ", tokens[i]);
+        tokens[i] = token;
+        token = strtok(NULL, " ");
         i++;
     }
-    free(tokens);
-    return (0);
+    tokens[i] = NULL;
+    return (tokens);
 }
 
-static int         get_qtd_tokens(char *input)
+int         get_qtd_tokens(char *input)
+{
+    int      qtd_tokens;
+
+    // Case has one token plus null terminator 
+    qtd_tokens = 2;
+    while (*input != '\0')
+    {
+        if (*input == 32)
+            qtd_tokens++;
+        input++;
+    }
+    return(qtd_tokens);
+}
+
+int         get_qtd_primitive_tokens(char *input)
 {
     int      qtd_tokens;
 

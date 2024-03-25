@@ -2,6 +2,15 @@
 
 
 
+# Katas
+
+
+1. Processo pai e filho. 
+Processo pai envia 5 mensagens para proceso filho, via fd, e depois enviar 
+SIGNAL correspondente a ctrl + d
+Processo filho executa cat com stdin duplicado para ler as mensagens do pai 
+
+
 
 # Referências
 
