@@ -3,23 +3,9 @@
 #include <stdlib.h>
 #include <assert.h>
 
-int         get_qtd_tokens(char *input)
-{
-    int      qtd_tokens;
+static int         get_qtd_tokens(char *input);
 
-    qtd_tokens = 2;
-    while (*input != '\0')
-    {
-        if (*input == '>' || *input == '<' || *input == '|')
-            qtd_tokens++;
-        input++;
-    }
-    return(qtd_tokens);
-}
-
-
-int main() {
-    char    str[] = "cat -a -b -c < ls.log | sort -b -d | wc -v";
+char    **parser(char *str) {
     char    *str_cp;
     char    delim[] = "<>|";
     char    *token;
@@ -66,14 +52,36 @@ int main() {
         }
         k++;
     }
-    printf("\n");
-    k = 0;
-    while (tokens[k] != NULL)
-    {
-        printf("%s ", tokens[k]);
-        k++;
-    }
     free(str_cp);
+    return tokens;
+}
+
+int main(void) {
+    char    str[] = "cat -a -b -c < ls.log | sort -b -d | wc -v";
+    char    **tokens;
+    int     i;
+
+    tokens = parser(str);
+    i = 0;
+    while (tokens[i] != NULL)
+    {
+        printf("%s ", tokens[i]);
+        i++;
+    }
     free(tokens);
-    return 0;
+    return (0);
+}
+
+static int         get_qtd_tokens(char *input)
+{
+    int      qtd_tokens;
+
+    qtd_tokens = 2;
+    while (*input != '\0')
+    {
+        if (*input == '>' || *input == '<' || *input == '|')
+            qtd_tokens++;
+        input++;
+    }
+    return(qtd_tokens);
 }
