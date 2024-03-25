@@ -55,26 +55,37 @@ man 2 open
 Katas para Praticar File Descriptors em Linux:
 
 ## Nível Fácil:
-1. Criar um novo arquivo e escrever uma mensagem nele.
-2. Ler o conteúdo de um arquivo e imprimir na tela.
-3. Copiar o conteúdo de um arquivo para outro.
-4. Apagar um arquivo.
+1. Criar um novo arquivo e escrever uma mensagem nele. [OK]
+2. Ler o conteúdo de um arquivo e imprimir na tela. [OK]
+3. Copiar o conteúdo de um arquivo para outro. [OK]
+4. Apagar um arquivo. [OK]
 
 ## Nível Médio:
-Concatenar dois arquivos em um único arquivo.
-Contar o número de linhas em um arquivo.
-Procurar uma palavra específica em um arquivo e imprimir a linha onde ela aparece.
-Redirecionar a entrada padrão (stdin) de um comando para um arquivo.
+Concatenar dois arquivos em um único arquivo. [OK]
+Contar o número de linhas em um arquivo. [OK]
+Procurar uma palavra específica em um arquivo e imprimir a linha onde ela aparece. [-]
+Redirecionar a entrada padrão (stdin) de um comando para um arquivo. [OK] 
 
 ## Nível Difícil:
-Redirecionar a saída padrão (stdout) de um comando para um arquivo.
+Redirecionar a saída padrão (stdout) de um comando para um arquivo. [OK]
 Criar um pipe e usar dois comandos para comunicar-se através do pipe.
-Duplicar um file descriptor e usar o duplicado para realizar uma operação em um arquivo.
+Duplicar um file descriptor e usar o duplicado para realizar uma operação em um arquivo. [-]
 Utilizar o comando flock para bloquear o acesso a um arquivo.
 
+
+# Google Dork 
+
+Utilizar o Google Dork para encontrar atividades de faculdades
+
+site:*.edu unix + files + files descriptors + assignments | homework | lab
+
+edisciplinas.usp.br unix threads
 
 # Referências 
 
 - https://aljensencprogramming.wordpress.com/tag/dup2/
 
 - https://www.cs.loyola.edu/~jglenn/702/S2005/Examples/dup2.html
+
+
+- https://web.stanford.edu/class/archive/cs/cs110/cs110.1204/
