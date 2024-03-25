@@ -5,23 +5,22 @@ https://medium.com/devquicktips/what-are-linux-pipelines-e2cff11a0f2d
 
 https://github.com/perusio/linux-programming-by-example/blob/master/book/ch09/ch09-pipeline.c
 
+[systemsprogrammingbook.com - Chapter 5. Writing Your Own Shell](https://www.cs.purdue.edu/homes/grr/SystemsProgrammingBook/Book/Chapter5-WritingYourOwnShell.pdf )
+|-> Estudar melhor o tópico Pipe and Input/Output Redirection in Your Shell
+
 ## 1. Redirecionamentos de Arquivos:
 
 Entrada (stdin): < redireciona a entrada de um comando para um arquivo.
 Saída (stdout): > redireciona a saída de um comando para um arquivo.
 Saída com acréscimo (stderr): >> redireciona a saída de um comando para um arquivo, anexando o conteúdo ao final do arquivo existente.
 
-https://www.redhat.com/sysadmin/linux-shell-redirection-pipelining
-
-https://ricardo-reis.medium.com/redirecionamento-e-pipes-no-linux-stdin-stdout-etderr-e-tee-952cd59a16c6
-
-
 
 ## 2. Pipes:
 
 Pipes são um mecanismo de comunicação entre processos (IPC) que permite que os comandos se comuniquem entre si, enviando dados de um para o outro.
 
-## Para implementar a pipeline:
+
+# Para implementar a pipeline:
 
 ### 1 - Análise de comandos:
 

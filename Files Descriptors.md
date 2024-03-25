@@ -83,9 +83,10 @@ edisciplinas.usp.br unix threads
 
 # Referências 
 
-- https://aljensencprogramming.wordpress.com/tag/dup2/
+- https://web.stanford.edu/class/cs110/
+- https://github.com/xuzheng465/Stanford_CS110
 
-- https://www.cs.loyola.edu/~jglenn/702/S2005/Examples/dup2.html
-
-
-- https://web.stanford.edu/class/archive/cs/cs110/cs110.1204/
+- https://sebastianmarines.com/post/linux-file-descriptors-and-what-does-21-mean/
+- https://www.cs.utexas.edu/~theksong/posts/2020-08-30-using-dup2-to-redirect-output/
+- 
+- 
