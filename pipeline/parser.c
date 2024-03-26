@@ -5,6 +5,14 @@
 
 #include "parser.h"
 
+static char    *strtrim(char *str)
+{
+
+    while(*str == 32)
+        str++;
+    return str;
+}
+
 char    **parser(char *str) 
 {
     char    *str_cp;
@@ -27,7 +35,7 @@ char    **parser(char *str)
     token = strtok(str, delim);
     while (token != NULL)
     {
-        tokens[i] = token;
+        tokens[i] = strtrim(token);
         token = strtok(NULL, delim);
         i += 2;
     }

@@ -4,8 +4,8 @@
 #define MAX_COMMANDS 8
 typedef struct command_s
 {
-    char    **cmd;  // get_tokens(parsed[i])
-    int     PIPE;  // if pipe after actual command
+    char    **cmd; 
+    int     PIPE; 
     int     INFILE; 
 	int     OUTFILE; 
     char    *infile; 

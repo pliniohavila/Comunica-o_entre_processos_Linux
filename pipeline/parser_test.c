@@ -27,7 +27,7 @@ int main(void) {
     i = 0;
     while (tokens[i] != NULL)
     {
-        printf("%s,", tokens[i]);
+        printf("%s, ", tokens[i]);
         i++;
     }
     free(tokens);
